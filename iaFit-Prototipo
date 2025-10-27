@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protótipo iaFit - Apresentação</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+        .hamburger {
+            display: none;
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: #1e1e1e;
+            transition: left 0.3s;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background: #4CAF50;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        body.dark .card {
+            background-color: #1e1e1e;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        input[type="range"], input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        body.dark input, body.dark select {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+        button {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #45a049, #5cb85c);
+        }
+        .hidden {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        body.dark th, body.dark td {
+            border-color: #555;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        body.dark th {
+            background-color: #333;
+        }
+        .progress-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(#4CAF50 0% 75%, #ddd 75%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            color: #333;
+            font-weight: bold;
+        }
+        body.dark .progress-circle {
+            background: conic-gradient(#66BB6A 0% 75%, #333 75%);
+            color: #e0e0e0;
+        }
+        .chat-container {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        body.dark .chat-container {
+            background-color: #2c2c2c;
+            border-color: #555;
+        }
+        .chat-message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .user-message {
+            background-color: #e0f7fa;
+            align-self: flex-end;
+        }
+        body.dark .user-message {
+            background-color: #37474f;
+        }
+        .ai-message {
+            background-color: #fff3e0;
+        }
+        body.dark .ai-message {
+            background-color: #424242;
+        }
+        .objective-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .objective-card {
+            flex: 1 1 45%;
+            background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        body.dark .objective-card {
+            background: linear-gradient(135deg, #263238, #37474f);
+        }
+        .objective-card.selected {
+            background: linear-gradient(135deg, #00bcd4, #0097a7);
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .objective-cards {
+                flex-direction: column;
+            }
+            .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <a onclick="navigateTo('screen-login')">Login</a>
+        <a onclick="navigateTo('screen-dashboard')">Dashboard</a>
+        <a onclick="navigateTo('screen-diet')">Dieta</a>
+        <a onclick="navigateTo('screen-workouts')">Treinos</a>
+        <a onclick="navigateTo('screen-chatbot')">Chatbot</a>
+    </div>
+    <div id="app">
+        <!-- Tela 1: Login -->
+        <div id="screen-login" class="screen">
+            <div class="header">iaFit <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Entrar</h2>
+                    <p class="problem">Problema: Dificuldade em encontrar planos personalizados.</p>
+                    <input type="email" placeholder="Email" value="user@example.com">
+                    <input type="password" placeholder="Senha" value="password123">
+                    <button onclick="navigateTo('screen-register')">Entrar</button>
+                    <button onclick="navigateTo('screen-register')">Registrar-se</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 2: Registro -->
+        <div id="screen-register" class="screen hidden">
+            <div class="header">Crie Sua Conta <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Dados Pessoais</h2>
+                    <p class="problem">Problema: Informações genéricas e demoradas.</p>
+                    <input type="text" placeholder="Nome" value="João Silva">
+                    <input type="email" placeholder="Email" value="joao@example.com">
+                    <input type="password" placeholder="Senha" value="senha123">
+                    <label>Idade: <span id="age-value">30</span></label>
+                    <input type="range" min="18" max="100" value="30" oninput="document.getElementById('age-value').textContent = this.value">
+                    <select>
+                        <option>Gênero: Masculino</option>
+                        <option>Feminino</option>
+                        <option>Outro</option>
+                    </select>
+                    <label>Altura (cm): <span id="height-value">175</span></label>
+                    <input type="range" min="100" max="250" value="175" oninput="document.getElementById('height-value').textContent = this.value">
+                    <label>Peso (kg): <span id="weight-value">70</span></label>
+                    <input type="range" min="30" max="200" value="70" oninput="document.getElementById('weight-value').textContent = this.value">
+                    <select>
+                        <option>Nível de Atividade: Moderado</option>
+                        <option>Sedentário</option>
+                        <option>Leve</option>
+                        <option>Intenso</option>
+                    </select>
+                    <button onclick="calculateHealth(); navigateTo('screen-health-data')">Calcular</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 3: Dados de Saúde -->
+        <div id="screen-health-data" class="screen hidden">
+            <div class="header">Dados de Saúde <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Métricas</h2>
+                    <p class="value">Valor: Insights de saúde em tempo real.</p>
+                    <table>
+                        <tr><th>Métrica</th><th>Valor</th><th>Descrição</th></tr>
+                        <tr><td>IMC</td><td id="imc-value">22.9</td><td>Normal</td></tr>
+                        <tr><td>TMB</td><td>1700 kcal</td><td>Taxa Metabólica</td></tr>
+                        <tr><td>Necessidade Diária</td><td>2200 kcal</td><td>Baseado em atividade</td></tr>
+                    </table>
+                    <div class="progress-circle">75% Saudável</div>
+                    <button onclick="navigateTo('screen-objective')">Continuar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 4: Objetivo -->
+        <div id="screen-objective" class="screen hidden">
+            <div class="header">Seu Objetivo <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Selecione</h2>
+                    <p class="value">Valor: Planos personalizados via IA.</p>
+                    <div class="objective-cards">
+                        <div class="objective-card" onclick="selectObjective(this)">Emagrecimento</div>
+                        <div class="objective-card" onclick="selectObjective(this)">Ganho de Massa</div>
+                        <div class="objective-card" onclick="selectObjective(this)">Manutenção</div>
+                        <div class="objective-card" onclick="selectObjective(this)">Outro</div>
+                    </div>
+                    <input type="text" placeholder="Detalhes" value="Perder 5kg em 2 meses">
+                    <button onclick="navigateTo('screen-diet')">Gerar Plano</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 5: Dieta -->
+        <div id="screen-diet" class="screen hidden">
+            <div class="header">Dieta Personalizada <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Resumo</h2>
+                    <p class="solution">Solução: Dietas adaptadas com IA.</p>
+                    <p>Calorias: 2000 kcal</p>
+                    <p>Macros: 40% Carbs, 30% Proteínas, 30% Gorduras</p>
+                    <div class="progress-circle">Macro Distribuição</div>
+                    <h3>Plano (Segunda)</h3>
+                    <ul>
+                        <li>Café: Aveia com frutas - 400kcal</li>
+                        <li>Almoço: Salada com frango - 600kcal</li>
+                        <li>Janta: Peixe grelhado - 500kcal</li>
+                    </ul>
+                    <button onclick="navigateTo('screen-workouts')">Ver Treinos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 6: Treinos -->
+        <div id="screen-workouts" class="screen hidden">
+            <div class="header">Treinos Personalizados <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Calendário</h2>
+                    <p class="solution">Solução: Treinos e cardio personalizados.</p>
+                    <table>
+                        <tr><th>Dia</th><th>Treino</th></tr>
+                        <tr><td>Segunda</td><td>Força: Agachamento</td></tr>
+                        <tr><td>Quarta</td><td>Cardio: Corrida 30min</td></tr>
+                        <tr><td>Sexta</td><td>Yoga: 45min</td></tr>
+                    </table>
+                    <div class="progress-circle">60% Completo</div>
+                    <button onclick="navigateTo('screen-dashboard')">Dashboard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 7: Dashboard -->
+        <div id="screen-dashboard" class="screen hidden">
+            <div class="header">Dashboard <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Progresso</h2>
+                    <p class="metric">Métrica: 50% no objetivo!</p>
+                    <div class="progress-circle">50% Objetivo</div>
+                    <button onclick="navigateTo('screen-health-data')">Atualizar</button>
+                    <button onclick="navigateTo('screen-diet')">Dieta</button>
+                    <button onclick="navigateTo('screen-workouts')">Treinos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 8: Chatbot de IA -->
+        <div id="screen-chatbot" class="screen hidden">
+            <div class="header">Chatbot iaFit <span class="hamburger" onclick="toggleSidebar()">☰</span></div>
+            <div class="container">
+                <div class="card">
+                    <h2>Suporte Personalizado</h2>
+                    <p class="solution">Solução: Atendimento via IA 24/7.</p>
+                    <div class="chat-container" id="chatbox">
+                        <div class="chat-message ai-message">Olá! Sou o iaFit. Como posso ajudar com sua dieta ou treino?</div>
+                        <div class="chat-message user-message">Quero perder 5kg. O que faço?</div>
+                        <div class="chat-message ai-message">Ótimo! Com base no seu IMC (22.9), sugiro 2000 kcal/dia e treinos de cardio 3x/semana. Quer o plano detalhado?</div>
+                    </div>
+                    <input type="text" id="chat-input" placeholder="Digite sua mensagem...">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById('sidebar').classList.remove('open');
+        }
+
+        function selectObjective(element) {
+            document.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function calculateHealth() {
+            const height = document.querySelector('input[type="range"][min="100"]').value / 100;
+            const weight = document.querySelector('input[type="range"][min="30"]').value;
+            const imc = (weight / (height * height)).toFixed(1);
+            document.getElementById('imc-value').textContent = imc;
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const chatbox = document.getElementById('chatbox');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user-message';
+            userMessage.textContent = input.value;
+            chatbox.appendChild(userMessage);
+            input.value = '';
+
+            // Resposta mockada do chatbot
+            setTimeout(() => {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'chat-message ai-message';
+                aiMessage.textContent = 'Resposta da IA: Analisando... Sugiro ajustar sua dieta para 1800 kcal e adicionar 20min de cardio. Confirma?';
+                chatbox.appendChild(aiMessage);
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 1000);
+
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        // Iniciar na tela de login
+        navigateTo('screen-login');
+    </script>
+</body>
+</html>
