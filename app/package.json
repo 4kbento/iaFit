@@ -1,0 +1,9 @@
+{
+  "name": "iafit-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "iaFit: telas do app ligadas ao banco PostgreSQL. Sem dependências: o conector do banco está em pg-mini.js.",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=16" }
+}
