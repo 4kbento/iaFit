@@ -1,0 +1,17 @@
+%%{init:{'theme':'base','themeVariables':{'primaryColor':'#F6E9EC','primaryBorderColor':'#5B2236','lineColor':'#5B2236','actorBkg':'#5B2236','actorTextColor':'#ffffff','actorBorder':'#5B2236','signalColor':'#333','noteBkgColor':'#FFF3D6','noteBorderColor':'#C1291F','noteTextColor':'#333'},'sequence':{'messageFontSize':26,'actorFontSize':26,'noteFontSize':24,'width':230,'height':56,'messageMargin':40,'actorMargin':20,'mirrorActors':false,'boxMargin':8,'noteMargin':8}}}%%
+sequenceDiagram
+actor U as Usuário
+participant A as App
+participant S as API
+participant B as PostgreSQL
+U->>A: Preenche os dados
+A->>S: POST /api/cadastro
+Note over S: Valida os campos
+S->>B: BEGIN
+S->>B: INSERT usuário e perfil
+S->>B: INSERT consentimentos
+Note over S: Regras montam os planos
+S->>B: INSERT planos
+S->>B: COMMIT
+S-->>A: Sessão e estado
+A-->>U: Dashboard com os planos

@@ -1,0 +1,14 @@
+digraph G{ rankdir=LR; bgcolor="white"; fontname="Helvetica"; nodesep=0.15; ranksep=0.55; compound=true;
+node[fontname="Helvetica",fontsize=27];edge[color="#5B2236",penwidth=1.6,arrowhead=none];
+U[label="Usuário",shape=box,style="filled,rounded",fillcolor="#5B2236",fontcolor=white,width=1.6,height=0.9,fontsize=26];
+subgraph cluster_s{label="iaFit (MVP web responsivo)";fontsize=18;fontcolor="#5B2236";color="#5B2236";style="rounded";penwidth=2;
+node[shape=ellipse,style=filled,fillcolor="#F6E9EC",color="#C1291F"];
+c1[label="Cadastrar-se (RF01)"];c2[label="Autenticar (RF02)"];c3[label="Calcular IMC e TMB\n(RF03, RF04)"];
+c4[label="Gerar plano alimentar (RF05)"];c5[label="Gerar plano de treino (RF06)"];c6[label="Conversar com o chatbot (RF07)"];
+c7[label="Registrar progresso (RF08)"];c8[label="Ver evolução (RF09)"];c9[label="Adaptar planos (RF10)"];
+c10[label="Configurar notificações (RF11)"];c11[label="Consultar histórico (RF12)"];c12[label="Recuperar senha (RF13)"];
+c13[label="Exportar ou excluir dados\n(LGPD)",fillcolor="#FFF3D6"];}
+M[label="Motor de planos\n(regras no MVP;\nIA na próxima fase)",shape=box,style="filled,rounded",fillcolor="#E5E5E5",width=1.6,fontsize=22];
+U->c1;U->c2;U->c6;U->c7;U->c8;U->c10;U->c11;U->c12;U->c13;U->c9;
+c1->c3[style=dashed,arrowhead=vee,label="«include»",fontsize=16];c1->c4[style=dashed,arrowhead=vee,label="«include»",fontsize=16];c1->c5[style=dashed,arrowhead=vee,label="«include»",fontsize=16];
+c4->M;c5->M;c6->M;c9->M;}

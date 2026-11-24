@@ -1,0 +1,22 @@
+digraph A{rankdir=LR;nodesep=0.5;ranksep=0.7;bgcolor=white;splines=true;
+node[fontname="Helvetica",fontsize=24,style="filled",fillcolor="#F6E9EC",color="#5B2236",penwidth=1.8,shape=box,margin="0.2,0.12"];
+edge[color="#5B2236",penwidth=1.8,fontname="Helvetica",fontsize=22,arrowsize=1];
+ini[label="",shape=circle,fillcolor="#5B2236",width=0.35];
+a[label="Informar dados,\nobjetivo e restrições"];
+b[label="Dados\nválidos?",shape=diamond];
+c[label="E-mail\njá existe?",shape=diamond];
+err[label="Mostrar\nerro claro",fillcolor="#FFF3D6",color="#C1291F"];
+d[label="Gravar usuário,\nperfil e consentimentos"];
+e[label="Calcular\nIMC e TMB"];
+f[label="Tem restrição\nalimentar?",shape=diamond];
+g[label="Filtrar\nalimentos"];
+h[label="Cardápio\npadrão"];
+i[label="Gerar plano alimentar\ne plano de treino"];
+fim[label="Abrir dashboard",fillcolor="#5B2236",fontcolor=white];
+{rank=same;ini;a}
+{rank=same;b;err;c}
+{rank=same;d;e}
+{rank=same;g;f;h}
+ini->a->b;b->c[label="sim"];b->err[label="não"];c->err[label="sim"];err->a[constraint=false];
+c->d[label="não"];d->e;e->f;f->g[label="sim"];f->h[label="não"];g->i;h->i;i->fim;
+}
