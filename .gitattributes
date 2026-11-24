@@ -192,3 +192,7 @@ Procfile    text
 ## EXECUTABLES
 *.exe binary
 *.pyc binary
+
+# Scripts do Windows mantêm CRLF
+*.bat text eol=crlf
+*.ps1 text eol=crlf
